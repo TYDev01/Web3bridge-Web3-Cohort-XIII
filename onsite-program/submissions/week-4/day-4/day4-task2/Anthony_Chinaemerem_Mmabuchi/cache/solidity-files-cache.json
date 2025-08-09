@@ -1,0 +1,77 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/tony/Documents/web3Bridge/khemmy_class/02_task/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/day4-task2/Anthony_Chinaemerem_Mmabuchi/contracts/OwnTodo.sol": {
+      "lastModificationDate": 1754008157980,
+      "contentHash": "95c193f81ad5d1ef200d2776bf7bdbac",
+      "sourceName": "contracts/OwnTodo.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "0.8.28"
+      ],
+      "artifacts": [
+        "TodoList"
+      ]
+    },
+    "/home/tony/Documents/web3Bridge/khemmy_class/02_task/Web3bridge-Web3-Cohort-XIII/onsite-program/submissions/week-4/day-4/day4-task2/Anthony_Chinaemerem_Mmabuchi/contracts/StudentMGT.sol": {
+      "lastModificationDate": 1754008319006,
+      "contentHash": "428830880349d780e0d9bd64639ff402",
+      "sourceName": "contracts/StudentMGT.sol",
+      "solcConfig": {
+        "version": "0.8.28",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.28"
+      ],
+      "artifacts": [
+        "StudentManagementSystem"
+      ]
+    }
+  }
+}

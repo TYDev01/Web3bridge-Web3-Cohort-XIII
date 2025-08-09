@@ -35,11 +35,31 @@ const config: HardhatUserConfig = {
     currency: "USD",
   },
   etherscan: {
-    apiKey: ETHERSCAN_API_KEY,
+    apiKey: {
+      "lisk-sepolia": "123", 
+    }, 
+    
+    customChains: [
+      {
+          network: "lisk-sepolia",
+          chainId: 4202,
+          urls: {
+              apiURL: "https://sepolia-blockscout.lisk.com/api",
+              browserURL: "https://sepolia-blockscout.lisk.com"
+          }
+      }
+    ]
+      
   },
+  
   ignition: {
     requiredConfirmations: 1,
   },
+  sourcify: {
+    enabled: false
+}
 };
 
 export default config;
+// ETHERSCAN_API_KEY
+
