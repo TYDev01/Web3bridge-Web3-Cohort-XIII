@@ -14,3 +14,4 @@ export default PiggyBankFactoryModule;
 
 
 
+// npx hardhat verify --network lisk-sepolia 0x58C335e54c8F96c28329d26B69Db87a4196cFa42
