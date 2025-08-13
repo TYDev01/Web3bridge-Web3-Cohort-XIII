@@ -1,23 +1,11 @@
-import { ethers } from "hardhat";
+import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
 
-async function main() {
-  const MyNFT = await ethers.getContractFactory("MyNFT");
-  const nft = await MyNFT.deploy();
-  await nft.waitForDeployment();
-  console.log(`MyNFT deployed to: ${await nft.getAddress()}`);
+export default buildModule("DaoModule", (m) => {
+  const myNFT = m.contract("MyNFT");
 
-  const RolesRegistry = await ethers.getContractFactory("RolesRegistry");
-  const registry = await RolesRegistry.deploy();
-  await registry.waitForDeployment();
-  console.log(`RolesRegistry deployed to: ${await registry.getAddress()}`);
+  const rolesRegistry = m.contract("RolesRegistry");
 
-  const Dao = await ethers.getContractFactory("Dao");
-  const dao = await Dao.deploy(await nft.getAddress(), await registry.getAddress());
-  await dao.waitForDeployment();
-  console.log(`Dao deployed to: ${await dao.getAddress()}`);
-}
+  const dao = m.contract("Dao", [myNFT, rolesRegistry]);
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
+  return { myNFT, rolesRegistry, dao };
 });
