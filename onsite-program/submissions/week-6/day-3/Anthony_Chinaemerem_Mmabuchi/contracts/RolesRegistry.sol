@@ -44,14 +44,14 @@ contract RolesRegistry is IERC7432 {
     }
 
     function revokeRole(address tokenAddress, uint256 tokenId, bytes32 roleId) external {
-        RoleData memory roleData = _roles[tokenAddress][tokenId][roleId];
-        require(roleData.recipient != address(0), "Role not found");
+        RoleData memory roleDetails = _roles[tokenAddress][tokenId][roleId];
+        require(roleDetails.recipient != address(0), "Role not found");
 
         address tokenOwner = IERC721(tokenAddress).ownerOf(tokenId);
         bool isGrantor = msg.sender == tokenOwner || _roleApprovalForAll[tokenAddress][tokenOwner][msg.sender];
-        bool isRecipient = msg.sender == roleData.recipient;
+        bool isRecipient = msg.sender == roleDetails.recipient;
 
-        require((isGrantor && roleData.revocable) || isRecipient, "Not authorized to revoke");
+        require((isGrantor && roleDetails.revocable) || isRecipient, "Not authorized to revoke");
 
         delete _roles[tokenAddress][tokenId][roleId];
         emit RoleRevoked(tokenAddress, tokenId, roleId);
@@ -62,16 +62,16 @@ contract RolesRegistry is IERC7432 {
         emit RoleApprovalForAll(tokenAddress, operator, approved);
     }
 
-    function unlockToken(address tokenAddress, uint256 tokenId) external {
+    function unlockToken(address, uint256 ) external pure {
         revert("Locking not supported in this implementation");
     }
 
     function recipientOf(address tokenAddress, uint256 tokenId, bytes32 roleId) external view returns (address) {
-        RoleData memory roleData = _roles[tokenAddress][tokenId][roleId];
-        if (roleData.recipient == address(0) || roleData.expirationDate <= block.timestamp) {
+        RoleData memory data = _roles[tokenAddress][tokenId][roleId];
+        if (data.recipient == address(0) || data.expirationDate <= block.timestamp) {
             return address(0);
         }
-        return roleData.recipient;
+        return data.recipient;
     }
 
     function expirationDateOf(address tokenAddress, uint256 tokenId, bytes32 roleId) external view returns (uint64) {
