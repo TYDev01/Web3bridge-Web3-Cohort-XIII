@@ -3,11 +3,11 @@ import { ethers } from "hardhat";
 const helpers = require("@nomicfoundation/hardhat-toolbox/network-helpers");
 
 const main = async () => {
-  const USDCAddress = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"; // USDC Address
-  const DAIAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F"; // DAI Address
-  const UNIRouter = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D"; // Uniswap Router Address
+  const USDCAddress = "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+  const DAIAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
+  const UNIRouter = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
 
-  const azaMan = "0xf584f8728b874a6a5c7a8d4d387c9aae9172d621"; // Holder of LP tokens
+  const azaMan = "0xf584f8728b874a6a5c7a8d4d387c9aae9172d621";
 
   console.log("Impersonating account:", azaMan);
   await helpers.impersonateAccount(azaMan);
@@ -25,21 +25,17 @@ const main = async () => {
   const pairAddress = await factory.getPair(USDCAddress, DAIAddress);
   console.log("Pair Address:", pairAddress);
 
-  // Use IERC20Permit to interact with the LP token contract
   const LPToken = await ethers.getContractAt("IERC20Permit", pairAddress);
 
-  // Get the liquidity (LP tokens) the impersonated signer holds
   const liquidity = await LPToken.balanceOf(impersonatedSigner.address);
   console.log("Liquidity to remove:", ethers.formatUnits(liquidity, 18));
 
-  const amountOutMin = ethers.parseUnits("0", 18); // Minimum amount of tokens to receive (set to 0 for simplicity)
-  const deadline = Math.floor(Date.now() / 1000) + 60 * 10; // Deadline for the transaction (10 minutes)
+  const amountOutMin = ethers.parseUnits("0", 18);
+  const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
 
-  // Generate the permit signature
-  const nonce = await LPToken.nonces(impersonatedSigner.address); // Get the nonce for the signer
+  const nonce = await LPToken.nonces(impersonatedSigner.address);
   console.log("Nonce for permit:", nonce.toString());
 
-  // Permit structure
   const permit = {
     owner: impersonatedSigner.address,
     spender: UNIRouter,
@@ -48,15 +44,14 @@ const main = async () => {
     deadline: deadline,
   };
 
-  // Domain for EIP-712 structured data
   const domain = {
     name: "Uniswap V2",
     version: "1",
-    chainId: 1, // Mainnet chainId (change it if you're on a different network)
+    chainId: 1,
     verifyingContract: pairAddress,
   };
 
-  // EIP-712 types
+
   const types = {
     Permit: [
       { name: "owner", type: "address" },
@@ -67,26 +62,25 @@ const main = async () => {
     ],
   };
 
-  // Sign the permit message
+
   console.log("Signing permit message...");
   const signature = await impersonatedSigner.signTypedData(domain, types, permit);
   const { v, r, s } = Signature.from(signature);
 
   console.log("Calling removeLiquidityWithPermit...");
 
-  // Call removeLiquidityWithPermit
   const tx = await ROUTER.connect(impersonatedSigner).removeLiquidityWithPermit(
-    USDCAddress, // Token 1 (USDC)
-    DAIAddress, // Token 2 (DAI)
-    liquidity, // Amount of LP tokens to remove
-    amountOutMin, // Minimum amount of token 1 to receive
-    amountOutMin, // Minimum amount of token 2 to receive
-    impersonatedSigner.address, // Recipient address
-    deadline, // Deadline
-    true, // Permit usage
-    v, // Signature 'v'
-    r, // Signature 'r'
-    s  // Signature 's'
+    USDCAddress,
+    DAIAddress,
+    liquidity,
+    amountOutMin,
+    amountOutMin,
+    impersonatedSigner.address,
+    deadline,
+    true,
+    v,
+    r,
+    s
   );
 
   console.log("Transaction sent, waiting for confirmation...");

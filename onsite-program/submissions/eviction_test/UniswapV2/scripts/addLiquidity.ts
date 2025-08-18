@@ -7,11 +7,11 @@ const main = async () => {
   const DAIAddress = "0x6B175474E89094C44Da98b954EedeAC495271d0F";
   const UNIRouter = "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D";
 
-  const USDCHolder = "0xf584f8728b874a6a5c7a8d4d387c9aae9172d621";
+  const azaMan = "0xf584f8728b874a6a5c7a8d4d387c9aae9172d621";
 
   // Impersonate the USDC Holder
-  await helpers.impersonateAccount(USDCHolder);
-  const impersonatedSigner = await ethers.getSigner(USDCHolder);
+  await helpers.impersonateAccount(azaMan);
+  const impersonatedSigner = await ethers.getSigner(azaMan);
 
   const amountADesired = ethers.parseUnits("20000", 6); // 20,000 USDC
   const amountBDesired = ethers.parseUnits("20000", 18); // 20,000 DAI
